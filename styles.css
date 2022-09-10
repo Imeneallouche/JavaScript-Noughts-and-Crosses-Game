@@ -1,0 +1,66 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(https://coolbackgrounds.io/images/unsplash/anders-jilden-medium-5d01610e.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+html {
+  font-family: "Urbanist", sans-serif;
+  color: #ffffff;
+  font-size: calc(7px + 0.7vw);
+}
+.game-section {
+  width: 50%;
+  max-width: 450px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.Title {
+  font-size: 2rem;
+}
+
+.Grid {
+  border-radius: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: space-around;
+  flex-wrap: wrap;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0.5rem;
+}
+.Setting {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #222;
+}
+input[type="button"] {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.Grid input {
+  border-radius: 2rem;
+  border: 1px solid #fff;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  width: 70%;
+  padding: 1rem;
+}
+
+.Grid input[type="checkbox"] {
+  flex: 1 1 28%;
+  padding: 0px;
+}
+.Grid input:checked {
+  background-color: aquamarine;
+}
