@@ -23,11 +23,9 @@ html {
   justify-content: center;
   text-align: center;
 }
-
 .Title {
   font-size: 2rem;
 }
-
 .Grid {
   border-radius: 2rem;
   width: 100%;
@@ -46,7 +44,6 @@ input[type="button"] {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
-
 .Grid input {
   border-radius: 2rem;
   border: 1px solid #fff;
@@ -56,7 +53,6 @@ input[type="button"] {
   width: 70%;
   padding: 1rem;
 }
-
 .Grid input[type="checkbox"] {
   flex: 1 1 28%;
   padding: 0px;

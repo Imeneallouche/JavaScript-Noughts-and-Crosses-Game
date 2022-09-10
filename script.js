@@ -1,9 +1,10 @@
 //GLOBAL VARIABLES
-const gameGrid = document.querySelector(".Grid");
+const gameGrid = document.querySelector(".Game");
 const settingGrid = document.querySelector(".Setting");
 const checkboxes = Array.from(
   document.querySelectorAll(".Grid input[type='checkbox']")
 );
+
 /*
 
 
@@ -15,15 +16,18 @@ const checkboxes = Array.from(
 
 
 
+
+
+FUNCTIONS
 function to make elements' height equals to their width (squares)*/
 function makeSquares(element) {
   element.style.height = `${element.clientWidth}px`;
 }
 
 //function to make the setting grid at the level of the game grid
-settingOn();
 function settingOn() {
-  settingGrid.offsetTop = `${-gameGrid.offsetTop}px`;
+  settingGrid.style.position = "relative";
+  settingGrid.style.top = `${-settingGrid.offsetHeight}px`;
 }
 
 /*
@@ -35,16 +39,21 @@ function settingOn() {
 
 
 
-make the:
-1-Game Grid
-2- Checkboxes
-squared*/
-makeSquares(gameGrid);
-makeSquares(settingGrid);
-checkboxes.forEach((checkbox) => makeSquares(checkbox));
 
-window.addEventListener("resize", () => {
-  makeSquares(gameGrid);
-  makeSquares(settingGrid);
-  checkboxes.forEach((checkbox) => makeSquares(checkbox));
+
+
+
+
+
+EVENT LISTENERS*/
+["DOMContentLoaded", "resize"].forEach((event) => {
+  window.addEventListener(event, () => {
+    //make squares
+    makeSquares(gameGrid);
+    makeSquares(settingGrid);
+    checkboxes.forEach((checkbox) => makeSquares(checkbox));
+
+    //make settings grid at same level as game grid
+    settingOn();
+  });
 });
