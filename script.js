@@ -13,16 +13,20 @@ const levelButtons = Array.from(
 );
 
 const levelButtonsarea = document.querySelector(".Setting .levels");
-const settingTitle = document.querySelector("Setting h1");
 
 const levelSettingsContent = levelButtonsarea.innerHTML;
 
+const settingTitle = document.querySelector(".Setting h1");
+
+const settingTtitleContent = settingTitle.innerHTML;
+
 const playerSettingContent = `
-<input type="button" value="x" data-player="x">
-<input type="button" value="o" data-player="o">
+<input type="button" value="x" data-player="x" onclick="ChoosePlayer('x')">
+<input type="button" value="o" data-player="o" onclick="ChoosePlayer('o')">
 `;
 
 let play = false;
+let player = "x";
 const cssQuestions = [
   "What is the CSS property to change font/typeface of the text?",
   "What is the CSS property to changesize of the text?",
@@ -67,18 +71,64 @@ function SettingButtonFix() {
 
 //function that makes the setting grid go to the top
 function settingOff(eventSelected) {
-  console.log(`Up now! because of ${eventSelected.target.value} button`);
   settingGrid.style.position = "relative";
   settingGrid.style.top = `${-3 * settingGrid.offsetHeight}px`;
 }
 
 //function to switch between level settings and player settings
 function switchSettings() {
-  if (levelButtonsarea.innerHTML.trim == levelSettingsContent.trim) {
+  if (settingTitle.innerHTML === settingTtitleContent) {
     levelButtonsarea.innerHTML = playerSettingContent;
+    settingTitle.innerHTML = `Choose Player`;
   } else {
     levelButtonsarea.innerHTML = levelSettingsContent;
+    settingTitle.innerHTML = settingTtitleContent;
   }
+}
+
+function EasyLevel() {
+  console.log("let him start");
+}
+
+function MediumLevel() {
+  console.log("let him start but take your precautions");
+}
+
+function HardLevel() {
+  console.log("we will start and make it impossible");
+}
+
+function GameStarts(difficultyLevel) {
+  settingOff();
+  play = true;
+
+  switch (difficultyLevel) {
+    case "easy":
+      EasyLevel();
+      break;
+
+    case "medium":
+      MediumLevel();
+      break;
+
+    case "hard":
+      HardLevel();
+      break;
+
+    default:
+      console.log("not such a thing man");
+      break;
+  }
+}
+
+function ChoosePlayer(playerChoice) {
+  if (playerChoice === "o") {
+    player = "o";
+  } else {
+    player = "x";
+  }
+  console.log(`he is playing with ${player}`);
+  switchSettings();
 }
 
 /*

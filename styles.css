@@ -98,5 +98,7 @@ button:hover {
 }
 
 .Grid input:checked {
-  background-color: aquamarine;
+  background-image: url(images/x_player.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
