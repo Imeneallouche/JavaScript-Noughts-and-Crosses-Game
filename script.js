@@ -87,7 +87,18 @@ function switchSettings() {
 }
 
 function EasyLevel() {
-  console.log("let him start");
+  let number = Math.floor(Math.random() * 9);
+  console.log(number);
+  while (checkboxes[number].checked) {
+    number = Math.floor(Math.random() * 9);
+  }
+  checkboxes[number].checked = true;
+
+  if (player === "x") {
+    checkboxes[number].classList.add("o_player");
+  } else {
+    checkboxes[number].classList.add("x_player");
+  }
 }
 
 function MediumLevel() {
@@ -131,6 +142,24 @@ function ChoosePlayer(playerChoice) {
   switchSettings();
 }
 
+function uncheckIt(eventSelected, difficultyLevel = null) {
+  if (!eventSelected.target.checked) {
+    eventSelected.target.checked = !eventSelected.target.checked;
+    return false;
+  }
+  return true;
+}
+
+function PlayerPLays(eventSelected) {
+  if (uncheckIt(eventSelected)) {
+    if (player === "x") {
+      eventSelected.target.classList.add("x_player");
+    } else {
+      eventSelected.target.classList.add("o_player");
+    }
+    EasyLevel();
+  }
+}
 /*
 
 
@@ -164,11 +193,19 @@ EVENT LISTENERS*/
   });
 });
 
+/*
 levelButtons.forEach((levelButton) =>
   levelButton.addEventListener("click", (eventSelected) => {
     play = true;
     settingOff(eventSelected);
   })
 );
+*/
 
 settingButton.addEventListener("click", switchSettings);
+
+checkboxes.forEach((checkbox) =>
+  checkbox.addEventListener("click", (eventSelected) =>
+    PlayerPLays(eventSelected)
+  )
+);

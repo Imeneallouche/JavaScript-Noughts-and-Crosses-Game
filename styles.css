@@ -97,8 +97,14 @@ button:hover {
   padding: 0px;
 }
 
-.Grid input:checked {
+.Grid .x_player:checked {
   background-image: url(images/x_player.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.Grid .o_player:checked {
+  background-image: url(images/o_player.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
