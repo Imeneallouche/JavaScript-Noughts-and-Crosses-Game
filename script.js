@@ -134,7 +134,7 @@ function EasyLevel() {
     Draw();
     return;
   } else {
-    let number = 0;
+    let number = Math.floor(Math.random() * 9);
     while (checkboxes[number].checked) {
       number = Math.floor(Math.random() * 9);
     }
