@@ -27,6 +27,8 @@ const playerSettingContent = `
 
 let play = false;
 let player = "x";
+let LevelOfDifficulty = "easy";
+
 const cssQuestions = [
   "What is the CSS property to change font/typeface of the text?",
   "What is the CSS property to changesize of the text?",
@@ -37,7 +39,21 @@ const cssQuestions = [
   "What is the CSS property to make the text underlined",
   "What is the CSS property to change the color of the text",
 ];
+
+const possibleWins = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 /*
+
+
+
 
 
 
@@ -56,26 +72,48 @@ function makeSquares(element) {
   element.style.height = `${element.clientWidth}px`;
 }
 
-//function to make the setting grid at the level of the game grid
+/*
+
+
+
+function to make the setting grid at the level of the game grid*/
 function SettingOn() {
   settingGrid.style.position = "relative";
   settingGrid.style.top = `${-settingGrid.offsetHeight}px`;
 }
 
-//function to fix setting button's place
+/*
+
+
+
+function to fix setting button's place*/
 function SettingButtonFix() {
   settingButton.style.position = "relative";
   settingButton.style.top = `${-20 * settingButton.clientTop}px`;
   settingButton.style.left = `${-20 * settingButton.clientLeft}px`;
 }
 
-//function that makes the setting grid go to the top
+/*
+
+
+
+function that makes the setting grid go to the top*/
 function settingOff(eventSelected) {
   settingGrid.style.position = "relative";
   settingGrid.style.top = `${-3 * settingGrid.offsetHeight}px`;
+
+  //unchek the buttons to start playing
+  uncheckAll();
+
+  //remove both classes if they are
+  removeClasses();
 }
 
-//function to switch between level settings and player settings
+/*
+
+
+
+function to switch between level settings and player settings*/
 function switchSettings() {
   if (settingTitle.innerHTML === settingTtitleContent) {
     levelButtonsarea.innerHTML = playerSettingContent;
@@ -86,62 +124,85 @@ function switchSettings() {
   }
 }
 
-function EasyLevel() {
-  let number = Math.floor(Math.random() * 9);
-  console.log(number);
-  while (checkboxes[number].checked) {
-    number = Math.floor(Math.random() * 9);
-  }
-  checkboxes[number].checked = true;
+/*
 
-  if (player === "x") {
-    checkboxes[number].classList.add("o_player");
+
+
+play x o with an easy computer level*/
+function EasyLevel() {
+  if (allChecked()) {
+    Draw();
+    return;
   } else {
-    checkboxes[number].classList.add("x_player");
+    let number = 0;
+    while (checkboxes[number].checked) {
+      number = Math.floor(Math.random() * 9);
+    }
+    checkboxes[number].checked = true;
+
+    if (player === "x") {
+      checkboxes[number].classList.add("o_player");
+    } else {
+      checkboxes[number].classList.add("x_player");
+    }
+
+    //check if the computer has won this
+    CheckWinner();
   }
 }
 
+/*
+
+
+
+play x o on a medium leve*/
 function MediumLevel() {
   console.log("let him start but take your precautions");
 }
 
+/*
+
+
+
+play x o on a hard level*/
 function HardLevel() {
   console.log("we will start and make it impossible");
 }
 
+/*
+
+
+
+set the settings off => detect difficulty level*/
 function GameStarts(difficultyLevel) {
   settingOff();
   play = true;
+  LevelOfDifficulty = difficultyLevel;
 
-  switch (difficultyLevel) {
-    case "easy":
-      EasyLevel();
-      break;
-
-    case "medium":
-      MediumLevel();
-      break;
-
-    case "hard":
-      HardLevel();
-      break;
-
-    default:
-      console.log("not such a thing man");
-      break;
+  if (difficultyLevel === "hard") {
+    HardLevel();
   }
 }
 
+/*
+
+
+
+detect the players choice (x or o) => switch the settings from player to difficulty*/
 function ChoosePlayer(playerChoice) {
   if (playerChoice === "o") {
     player = "o";
   } else {
     player = "x";
   }
-  console.log(`he is playing with ${player}`);
   switchSettings();
 }
 
+/*
+
+
+
+avoid unchecking checkboxes after being checked*/
 function uncheckIt(eventSelected, difficultyLevel = null) {
   if (!eventSelected.target.checked) {
     eventSelected.target.checked = !eventSelected.target.checked;
@@ -150,6 +211,124 @@ function uncheckIt(eventSelected, difficultyLevel = null) {
   return true;
 }
 
+/*
+
+
+
+*/
+function CheckWinner() {
+  //loop over possible wins
+  for (let i = 0; i < possibleWins.length; i++) {
+    //one of the possible wins arrays
+    let possibleWin = possibleWins[i];
+    let j = 0;
+    let winner = true;
+    let playerClass = null;
+
+    //loop over the 3 checkboxes of possible win
+    while (j < possibleWin.length && winner == true) {
+      if (checkboxes[possibleWin[j]].checked) {
+        //the player who is playing
+        playerClass = checkboxes[possibleWin[0]].classList[0];
+
+        if (!(checkboxes[possibleWin[j]].classList[0] == playerClass)) {
+          winner = false;
+        }
+      } else {
+        winner = false;
+      }
+      j++;
+    }
+    if (winner == true) {
+      if (playerClass.includes(player)) {
+        YouWin();
+      } else {
+        YouLost();
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+/*
+
+
+
+*/
+function Draw() {
+  console.log("Draw");
+  SettingOn();
+  //settingTtitleContent = `<h1 class="Title">Draw <br> Select Difficulty</h1>`;
+  settingTitle.innerHTML = `Draw <br> Select Difficulty`;
+}
+
+/*
+
+
+
+*/
+function YouWin() {
+  console.log("You win");
+  SettingOn();
+  //settingTtitleContent = `<h1 class="Title">You Won <br> Select Difficulty</h1>`;
+  settingTitle.innerHTML = `Youn Won <br> Select Difficulty`;
+}
+
+/*
+
+
+
+*/
+function YouLost() {
+  console.log("you lose");
+  SettingOn();
+  //settingTtitleContent = `<h1 class="Title">You Lost <br> Select Difficulty</h1>`;
+  settingTitle.innerHTML = `You Lost <br> Select Difficulty`;
+}
+
+/*
+
+
+
+*/
+function allChecked() {
+  let allCheckboxesChecked = true;
+  for (let i = 0; i < checkboxes.length; i++) {
+    if (!checkboxes[i].checked) {
+      allCheckboxesChecked = false;
+      break;
+    }
+  }
+  return allCheckboxesChecked;
+}
+
+/*
+
+
+
+*/
+function uncheckAll() {
+  checkboxes.forEach((checkbox) => (checkbox.checked = false));
+}
+
+/*
+
+
+
+*/
+function removeClasses() {
+  checkboxes.forEach((checkbox) => {
+    checkbox.classList.remove("x_player");
+    checkbox.classList.remove("o_player");
+  });
+}
+
+/*
+
+
+
+*/
 function PlayerPLays(eventSelected) {
   if (uncheckIt(eventSelected)) {
     if (player === "x") {
@@ -157,7 +336,28 @@ function PlayerPLays(eventSelected) {
     } else {
       eventSelected.target.classList.add("o_player");
     }
-    EasyLevel();
+
+    //check if there is a win after player's move
+    if (!CheckWinner()) {
+      //if not continue with computer's turn
+      switch (LevelOfDifficulty) {
+        case "easy":
+          EasyLevel();
+          break;
+
+        case "medium":
+          MediumLevel();
+          break;
+
+        case "hard":
+          HardLevel();
+          break;
+
+        default:
+          console.log("not such a thing man");
+          break;
+      }
+    }
   }
 }
 /*
